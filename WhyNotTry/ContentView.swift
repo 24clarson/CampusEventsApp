@@ -1,57 +1,102 @@
-//
-//  ContentView.swift
-//  WhyNotTry
-//
-//  Created by Tim Condon on 14/02/2023.
-//
-
 import SwiftUI
 
 struct ContentView: View {
-    var activities = ["Archery", "Baseball", "Basketball", "Bowling", "Boxing", "Cricket", "Curling", "Fencing", "Golf", "Hiking", "Lacrosse", "Rugby", "Squash"]
-    var colors: [Color] = [.blue, .cyan, .gray, .green, .indigo, .mint, .orange, .pink, .purple, .red]
-    
-    @State private var selected = "Baseball"
-    @State private var id = 1
+//    let events: [String]
+//    let events: [[String: String]] = [
+//        ["title": "A", "time": "B"],
+//        ["title": "C", "time": "D"],
+//    ]
+//    let details: [[String: String]] = [
+//        ["title": "Title", "desc": "Description"],
+//        ["title": "Title", "desc": "Description"],
+//    ]
+    let events: [[String]] = [
+        ["A", "B"],
+        ["C", "D"],
+        ["E", "F"],
+        ["G", "H"],
+        ]
+    let details: [[String]] = [
+        ["Title", "Description"],
+        ["Title2", "Description2"],
+        ["Title3", "Description3"],
+        ["Title4", "Description4"],
+    ]
     
     var body: some View {
-        VStack {
-            Spacer()
-            
-            Text("Why not try…")
-                .font(.largeTitle.bold())
-            
+        NavigationView {
+
             VStack {
-                Circle()
-                    .fill(colors.randomElement() ?? .blue)
-                    .padding()
-                    .overlay(
-                        Image(systemName: "figure.\(selected.lowercased())")
-                            .font(.system(size: 144))
-                            .foregroundColor(.white)
-                    )
                 
-                Text("\(selected)!")
-                    .font(.title)
-            }
-            .transition(.slide)
-            .id(id)
-            
-            Spacer()
-            
-            Button("Try again") {
-                withAnimation(.easeInOut(duration: 1)) {
-                    selected = activities.randomElement() ?? "Archery"
-                    id += 1
+                Text("Upcoming Events").font(.custom("Times New Roman", size:40))
+                
+                ForEach(events.indices, id: \.self) { i in
+                    ZStack {
+                        
+                        Rectangle().fill(.red).frame(width: 300, height: 80).cornerRadius(10)
+                        
+                        HStack {
+                            
+                            Text(events[i][0])
+                            
+                                .font(.custom("Avenir", size:20))
+                            
+                                .foregroundColor(.white)
+                            
+                                .frame(width: 200, alignment: .leading)
+                            
+                                .lineLimit(nil)
+                            
+                            Spacer()
+                            
+                            VStack {
+                                
+                                Text(events[i][1])
+                                
+                                    .font(.custom("Avenir", size:16))
+                                
+                                    .foregroundColor(.white)
+                                
+                                NavigationLink(destination: InfoView(details: details[i])) {
+                                    Text("View info")
+                                    
+                                        .font(.custom("Avenir", size:16))
+                                    
+                                        .foregroundColor(.white)
+                                    
+                                        .underline()
+                                }
+                                
+                            }
+                            
+                            .frame(width: 80, alignment: .leading)
+                            
+                        }
+                        
+                        .padding(.leading, 20)
+                        
+                        .frame(width: 300, height: 60)
+                        
+                    }
                 }
+                
+                Spacer()
+                
             }
-            .buttonStyle(.borderedProminent)
+            
         }
     }
+
 }
 
+
+
 struct ContentView_Previews: PreviewProvider {
+
     static var previews: some View {
+
         ContentView()
+
     }
+
 }
